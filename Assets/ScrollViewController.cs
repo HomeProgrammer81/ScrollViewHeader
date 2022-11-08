@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace Assets
 {
+    // スクロールビューコントローラー
     class ScrollViewController : MonoBehaviour
     {
         private GameObject viewport;
@@ -18,6 +19,7 @@ namespace Assets
         private GameObject rowHeader;
         private GameObject cell;
 
+        // 開始
         private void Start()
         {
             viewport = transform.Find("Viewport").gameObject;
@@ -62,9 +64,9 @@ namespace Assets
             }
 
             // セル 10×15
-            for (int i=0; i<10; i++)
+            for (int i = 0; i < 10; i++)
             {
-                for( int j=0; j<15; j++)
+                for (int j = 0; j < 15; j++)
                 {
                     GameObject cellChild = GameObject.Instantiate(cell.transform.Find("Panel_Cell_Org")).gameObject;
                     cellChild.transform.parent = cell.transform;
@@ -78,12 +80,14 @@ namespace Assets
                 }
             }
 
+            // 
             content.GetComponent<RectTransform>().sizeDelta = new Vector2(cellWidth * (1 + 10), cellHeight * (1 + 15));
         }
 
+        // 水平スクロールバー移動
         public void ScrollView_Horizontal(float value)
         {
-            float yContact = content.GetComponent<RectTransform>().anchoredPosition.y;
+            float yContent = content.GetComponent<RectTransform>().anchoredPosition.y;
 
             float contentWidth = content.GetComponent<RectTransform>().rect.width;
             float viewportWidth = viewport.GetComponent<RectTransform>().rect.width;
@@ -97,18 +101,19 @@ namespace Assets
             float cellHeight = header.GetComponent<RectTransform>().sizeDelta.y;
             rowHeader.GetComponent<RectTransform>().anchoredPosition = new Vector2(diff, -cellHeight);
 
-            header.GetComponent<RectTransform>().anchoredPosition = new Vector2(diff, -yContact);
+            header.GetComponent<RectTransform>().anchoredPosition = new Vector2(diff, -yContent);
 
         }
 
+        // 垂直スクロールバー移動
         public void ScrollView_Vertical(float value)
         {
-            float xContact = content.GetComponent<RectTransform>().anchoredPosition.x;
+            float xContent = content.GetComponent<RectTransform>().anchoredPosition.x;
 
             float contactHeight = content.GetComponent<RectTransform>().rect.height;
             float viewportHeight = viewport.GetComponent<RectTransform>().rect.height;
             
-            float diff = (contactHeight - viewportHeight) * (1 - value);
+            float diff = (contactHeight - viewportHeight) * (1-value);
             if (diff < 0)
             {
                 diff = 0;
@@ -117,7 +122,7 @@ namespace Assets
             float cellWidth = header.GetComponent<RectTransform>().sizeDelta.x;
             columnHeader.GetComponent<RectTransform>().anchoredPosition = new Vector2(cellWidth, -diff);
 
-            header.GetComponent<RectTransform>().anchoredPosition = new Vector2(-xContact, -diff);
+            header.GetComponent<RectTransform>().anchoredPosition = new Vector2(-xContent, -diff);
         }
     }
 }
