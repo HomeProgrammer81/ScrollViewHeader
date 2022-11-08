@@ -80,5 +80,44 @@ namespace Assets
 
             content.GetComponent<RectTransform>().sizeDelta = new Vector2(cellWidth * (1 + 10), cellHeight * (1 + 15));
         }
+
+        public void ScrollView_Horizontal(float value)
+        {
+            float yContact = content.GetComponent<RectTransform>().anchoredPosition.y;
+
+            float contentWidth = content.GetComponent<RectTransform>().rect.width;
+            float viewportWidth = viewport.GetComponent<RectTransform>().rect.width;
+            
+            float diff = (contentWidth - viewportWidth) * value;
+            if (diff < 0)
+            {
+                diff = 0;
+            }
+
+            float cellHeight = header.GetComponent<RectTransform>().sizeDelta.y;
+            rowHeader.GetComponent<RectTransform>().anchoredPosition = new Vector2(diff, -cellHeight);
+
+            header.GetComponent<RectTransform>().anchoredPosition = new Vector2(diff, -yContact);
+
+        }
+
+        public void ScrollView_Vertical(float value)
+        {
+            float xContact = content.GetComponent<RectTransform>().anchoredPosition.x;
+
+            float contactHeight = content.GetComponent<RectTransform>().rect.height;
+            float viewportHeight = viewport.GetComponent<RectTransform>().rect.height;
+            
+            float diff = (contactHeight - viewportHeight) * (1 - value);
+            if (diff < 0)
+            {
+                diff = 0;
+            }
+
+            float cellWidth = header.GetComponent<RectTransform>().sizeDelta.x;
+            columnHeader.GetComponent<RectTransform>().anchoredPosition = new Vector2(cellWidth, -diff);
+
+            header.GetComponent<RectTransform>().anchoredPosition = new Vector2(-xContact, -diff);
+        }
     }
 }
